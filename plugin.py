@@ -1,5 +1,7 @@
 import re
 import json
+import asyncio
+import os
 from pathlib import Path
 from typing import List, Tuple, Optional, Dict, Set
 from src.plugin_system import (
@@ -164,6 +166,43 @@ class IgnorePhrasePlugin(BasePlugin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         manager.load(self.plugin_dir)
+        
+        # Start file watcher
+        async def _watch_file():
+            if not manager.file_path:
+                return
+            
+            last_mtime = 0
+            try:
+                last_mtime = os.path.getmtime(manager.file_path)
+            except FileNotFoundError:
+                pass
+                
+            while True:
+                await asyncio.sleep(5) # Check every 5 seconds
+                try:
+                    mtime = os.path.getmtime(manager.file_path)
+                    if mtime != last_mtime:
+                        last_mtime = mtime
+                        logger.info("[IgnorePhrasePlugin] Detected change in ignore_phrases.json, reloading...")
+                        # Reload logic: read file and update manager.phrases
+                        # We can reuse manager.load but need to pass plugin_dir. 
+                        # Since manager.file_path is already set, we can just reload from it.
+                        with open(manager.file_path, 'r', encoding='utf-8') as f:
+                            manager.phrases = json.load(f)
+                        logger.info(f"[IgnorePhrasePlugin] Reloaded {len(manager.phrases)} phrases.")
+                except FileNotFoundError:
+                    continue
+                except Exception as e:
+                    logger.error(f"[IgnorePhrasePlugin] Error watching file: {e}")
+
+        # Create background task
+        try:
+             asyncio.create_task(_watch_file())
+        except RuntimeError:
+             # Loop might not be running yet if called during init phase too early, 
+             # but usually plugins are init inside a loop.
+             pass
 
     def get_plugin_components(self) -> List[Tuple[ComponentInfo, Type]]:
         return [

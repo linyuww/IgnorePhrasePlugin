@@ -1,17 +1,17 @@
 {
     "manifest_version": 1,
-    "name": "忽略短语插件 (IgnorePhrasePlugin)",
+    "name": "IgnorePhrasePlugin",
     "version": "1.0.0",
     "description": "当用户输入匹配特定正则表达式的短语时，自动忽略该消息，不进行回复。",
     "author": {
-        "name": "Your Name",
-        "url": "https://github.com/YourUsername"
+        "name": "linyuww",
+        "url": "https://github.com/linyuww"
     },
     "license": "MIT",
     "host_application": {
         "min_version": "0.10.2"
     },
-    "repository_url": "https://github.com/YourUsername/ignore_phrase_plugin",
+    "repository_url": "https://github.com/linyuww/IgnorePhrasePlugin#",
     "keywords": [
         "ignore",
         "regex",
