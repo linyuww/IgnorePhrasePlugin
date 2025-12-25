@@ -1,0 +1,17 @@
+[plugin]
+enabled = true
+
+[phrases]
+enabled = true
+list = ["广告", "推广", "加群"]
+match_mode = "contains"
+case_sensitive = false
+
+[regex]
+enabled = true
+patterns = ["^/spam.*", "https?://.*\\.xyz"]
+case_sensitive = false
+
+[logging]
+log_ignored = true
+debug = true

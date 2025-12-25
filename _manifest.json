@@ -11,7 +11,7 @@
     "host_application": {
         "min_version": "0.10.2"
     },
-    "repository_url": "https://github.com/linyuww/IgnorePhrasePlugin#",
+    "repository_url": "https://github.com/linyuww/IgnorePhrasePlugin",
     "keywords": [
         "ignore",
         "regex",
@@ -24,6 +24,27 @@
     ],
     "default_locale": "zh-CN",
     "plugin_info": {
-        "is_built_in": false
+        "is_built_in": false,
+        "plugin_type": "filter",
+        "components": [
+            {
+                "type": "event_handler",
+                "name": "ignore_message_handler",
+                "description": "拦截匹配配置短语或正则表达式的消息"
+            },
+            {
+                "type": "command",
+                "name": "ignore",
+                "description": "管理忽略词列表",
+                "pattern": "/ignore"
+            }
+        ],
+        "features": [
+            "短语匹配过滤",
+            "正则表达式匹配",
+            "WebUI可视化配置",
+            "聊天命令管理",
+            "白名单/黑名单权限控制"
+        ]
     }
 }
